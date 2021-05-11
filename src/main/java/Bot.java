@@ -51,7 +51,7 @@ public class Bot extends TelegramLongPollingBot implements LongPollingBot {
                 break;
 
             case "Exponentiation":
-                strt.smm(message, "Хуй тебе");
+                strt.smm(message, "Cча помогу возвести в степень... Подождите...");
 
                 break;
             case "/help":
