@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.generics.LongPollingBot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class Bot extends TelegramLongPollingBot implements LongPollingBot {
 
@@ -37,43 +38,44 @@ public class Bot extends TelegramLongPollingBot implements LongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        Start strt = new Start();
+
+        Exponentiation exp = new Exponentiation();
 
         Message message = update.getMessage();
 
 
-    if(message != null && message.hasText()) {
+        if(message != null && message.hasText()) {
 
-        switch (message.getText()){
+            switch (message.getText()){
 
-            case "/start":
-                sm(message,"Поехали");
-                break;
+                case "/start":
+                    sm(message,"Поехали");
 
-            case "Exponentiation":
-                strt.smm(message, "Cча помогу возвести в степень... Подождите...");
+                    break;
 
-                break;
-            case "/help":
-                sm(message, "Ну и чем я тебе помогу бедолага?");
-                break;
+                case "Exponentiation":
+                    exp.smm(message, "Выбирай и вводи");
+                    break;
+                case "/help":
+                    sm(message, "Ну и чем я тебе помогу бедолага?");
+                    break;
 
-            case "Formulas":
-                sm(message, "Здесь скоро появятся формулы");
-                break;
+                case "Formulas":
+                    sm(message, "Здесь скоро появятся формулы");
+                    break;
 
-            case "Sqrt":
-                sm(message, "Cча помогу найти корень... Подождите...");
-                break;
+                case "Sqrt":
+                    sm(message, "Cча помогу найти корень... Подождите...");
+                    break;
 
-            case "Log":
-                sm(message,"Сложнаа...");
-                break;
+                case "Log":
+                    sm(message,"Сложнаа...");
+                    break;
 
 
-            default:
-                sm(message,"Я таких команд не знаю, пока, но скоро узнаю");
-                break;
+                default:
+                    sm(message,"Я таких команд не знаю, пока, но скоро узнаю");
+                    break;
 
             }
         }
@@ -123,6 +125,7 @@ public class Bot extends TelegramLongPollingBot implements LongPollingBot {
         }catch (TelegramApiException e)
         {e.printStackTrace();}
     }
+
 
 
 
