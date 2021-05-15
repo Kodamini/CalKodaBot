@@ -13,15 +13,31 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Exponentiation extends TelegramLongPollingBot {
-    public static void main(String[] args) {
 
+
+
+
+
+    public synchronized void sendMsg(String chatId, String s) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.enableMarkdown(true);
+        sendMessage.setChatId(chatId);
+        double i = Double.parseDouble(s);
+        double sa = Math.pow(i,2);
+        String sas = Double.toString(sa);
+        sendMessage.setText(sas);
+
+
+        try {
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            //     log.log(Level.SEVERE, "Exception: ", e.toString());
+        }
     }
-
 
     @Override
     public void onUpdateReceived(Update update) {
 
-        X2 x2 = new X2();
 
         String mess = update.getMessage().getText();
         sendMsg(update.getMessage().getChatId().toString(), mess);
@@ -36,6 +52,8 @@ public class Exponentiation extends TelegramLongPollingBot {
             switch (message.getText()){
                 case "2":
                     //Здесь должно быть обращение к X2.java и запуск возведения в степень
+
+
 
                     break;
                 case "X^3":
@@ -117,22 +135,8 @@ public class Exponentiation extends TelegramLongPollingBot {
         }catch (TelegramApiException e)
         {e.printStackTrace();}
     }
-    public synchronized void sendMsg(String chatId, String s) {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.enableMarkdown(true);
-        sendMessage.setChatId(chatId);
-        double i = Double.parseDouble(s);
-        double sa = Math.pow(i,2);
-        String sas = Double.toString(sa);
-        sendMessage.setText(sas);
 
 
-        try {
-            execute(sendMessage);
-        } catch (TelegramApiException e) {
-            //     log.log(Level.SEVERE, "Exception: ", e.toString());
-        }
-    }
 
 
 
@@ -148,7 +152,6 @@ public class Exponentiation extends TelegramLongPollingBot {
         Bot bot = new Bot();
         return bot.getBotToken();
     }
-
 
 
 

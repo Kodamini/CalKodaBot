@@ -41,6 +41,8 @@ public class Bot extends TelegramLongPollingBot implements LongPollingBot {
 
         Exponentiation exp = new Exponentiation();
 
+
+
         Message message = update.getMessage();
 
 
@@ -53,8 +55,9 @@ public class Bot extends TelegramLongPollingBot implements LongPollingBot {
 
                     break;
 
-                case "Exponentiation":
+                case "2":
                     exp.smm(message, "Выбирай и вводи");
+                    exp.onUpdateReceived(update);
                     break;
                 case "/help":
                     sm(message, "Ну и чем я тебе помогу бедолага?");
@@ -83,6 +86,8 @@ public class Bot extends TelegramLongPollingBot implements LongPollingBot {
 
     }
 
+
+
     private void sm(Message message,String s){
         SendMessage sm = new SendMessage();
         sm.enableMarkdown(true);
@@ -100,7 +105,7 @@ public class Bot extends TelegramLongPollingBot implements LongPollingBot {
         // Первая строчка клавиатуры
         KeyboardRow keyboardFirstRow = new KeyboardRow();
         // Добавляем кнопки в первую строчку клавиатуры
-        keyboardFirstRow.add(new KeyboardButton("Exponentiation"));
+        keyboardFirstRow.add(new KeyboardButton("2"));
         keyboardFirstRow.add(new KeyboardButton("Sqrt"));
 
         // Вторая строчка клавиатуры
