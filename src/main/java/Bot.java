@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.LongPollingBot;
 
+import javax.activation.CommandInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,8 +27,16 @@ public class Bot extends TelegramLongPollingBot implements LongPollingBot {
     }
 
     private final String BOT_USERNAME = "CalKodaBot";
-    private final String BOT_TOKEN = "1777181508:AAFYYEiEccY4kurEG735EQSQMx4Q7FdurJ4";
+    private final String BOT_TOKEN = "1828309914:AAFd5DL2uOq3bko3ucLD9axCiZGu_Mz3HlM";
 
+
+    ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+
+    Double num_1;
+    Double num_2;
+    Double res;
+    String oper;
+    private long chatId;
 
 
     private String getUserName(Message msg) {
@@ -36,19 +45,77 @@ public class Bot extends TelegramLongPollingBot implements LongPollingBot {
         return (userName != null) ? userName : String.format("%s %s", user.getLastName(), user.getFirstName());
     }
 
+    public synchronized void sendMsg(Message msg, String s) {
+
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(String.valueOf(msg.getChatId()));
+        sendMessage.setText(s);
+        sendMessage.setReplyMarkup(replyKeyboardMarkup);
+
+        try {
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            //     log.log(Level.SEVERE, "Exception: ", e.toString());
+        }
+    }
+
     @Override
     public void onUpdateReceived(Update update) {
 
         Exponentiation exp = new Exponentiation();
 
+        ArrayList<KeyboardRow> keyboard = new ArrayList<KeyboardRow>();
+        KeyboardRow keyboardFirstRow = new KeyboardRow();
+        KeyboardRow keyboardSecondRow = new KeyboardRow();
 
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(true);
 
         Message message = update.getMessage();
+        String txt = message.getText();
 
 
-        if(message != null && message.hasText()) {
+        if (txt.equals("/start") || (txt.equals("start"))) {
+            keyboard.clear();
+            keyboardFirstRow.add("Exp");
+            keyboardFirstRow.add("Sqrt");
+            keyboardSecondRow.add("Help");
+            keyboard.add(keyboardFirstRow);
+            keyboard.add(keyboardSecondRow);
+            replyKeyboardMarkup.setKeyboard(keyboard);
+            sendMsg(message, "Salam");
+            return;
+        }
+        if (txt.equals("/exp") || (txt.equals("Exp"))){
+            keyboard.clear();
 
-            switch (message.getText()){
+            keyboardFirstRow.add("2");
+            keyboardFirstRow.add("3");
+            keyboardSecondRow.add("Back");
+            keyboard.add(keyboardFirstRow);
+            keyboard.add(keyboardSecondRow);
+            replyKeyboardMarkup.setKeyboard(keyboard);
+            sendMsg(message, "re");
+        }
+
+        if (txt.equals("/2") || (txt.equals("3"))){
+            keyboard.clear();
+            Double d = Math.pow(num_1,num_2);
+
+            String re= d.toString();
+            keyboard.add(keyboardFirstRow);
+            keyboard.add(keyboardSecondRow);
+            replyKeyboardMarkup.setKeyboard(keyboard);
+            sendMsg(message, re);
+        }
+    }
+    public synchronized void exp(Message msg, String s){
+
+    }
+
+
+         /*   switch (message.getText()){
 
                 case "/start":
                     sm(message,"Поехали");
@@ -56,8 +123,9 @@ public class Bot extends TelegramLongPollingBot implements LongPollingBot {
                     break;
 
                 case "2":
-                    exp.smm(message, "Выбирай и вводи");
-                    exp.onUpdateReceived(update);
+                    String mess = update.getMessage().getText();
+                    sendMsg(update.getMessage().getChatId().toString(), mess);
+
                     break;
                 case "/help":
                     sm(message, "Ну и чем я тебе помогу бедолага?");
@@ -80,13 +148,13 @@ public class Bot extends TelegramLongPollingBot implements LongPollingBot {
                     sm(message,"Я таких команд не знаю, пока, но скоро узнаю");
                     break;
 
-            }
-        }
+            }*/
 
 
-    }
 
 
+
+/*
 
     private void sm(Message message,String s){
         SendMessage sm = new SendMessage();
@@ -130,7 +198,7 @@ public class Bot extends TelegramLongPollingBot implements LongPollingBot {
         }catch (TelegramApiException e)
         {e.printStackTrace();}
     }
-
+*/
 
 
 

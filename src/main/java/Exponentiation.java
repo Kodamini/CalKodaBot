@@ -14,25 +14,24 @@ import java.util.regex.Pattern;
 
 public class Exponentiation extends TelegramLongPollingBot {
 
-
-
-
+        Bot bot = new Bot();
 
     public synchronized void sendMsg(String chatId, String s) {
+        /*s = bot.num_1;
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(chatId);
         double i = Double.parseDouble(s);
-        double sa = Math.pow(i,2);
-        String sas = Double.toString(sa);
-        sendMessage.setText(sas);
+        double sa = Math.pow(i, Double.parseDouble(bot.num_2));
+        bot.res = Double.toString(sa);
+        sendMessage.setText(bot.res);
 
 
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
             //     log.log(Level.SEVERE, "Exception: ", e.toString());
-        }
+        }*/
     }
 
     @Override
@@ -51,7 +50,7 @@ public class Exponentiation extends TelegramLongPollingBot {
 
             switch (message.getText()){
                 case "2":
-                    //Здесь должно быть обращение к X2.java и запуск возведения в степень
+
 
 
 
