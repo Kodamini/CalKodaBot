@@ -1,4 +1,5 @@
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.groupadministration.ExportChatInviteLink;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -10,6 +11,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.LongPollingBot;
 
 import javax.activation.CommandInfo;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -27,14 +31,15 @@ public class Bot extends TelegramLongPollingBot implements LongPollingBot {
     }
 
     private final String BOT_USERNAME = "CalKodaBot";
-    private final String BOT_TOKEN = "1828309914:AAFd5DL2uOq3bko3ucLD9axCiZGu_Mz3HlM";
-
+    private final String BOT_TOKEN = "1782452747:AAHIETSpXBcI_2D6Ao0yu2bswI3fG51sFTo";
 
     ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 
     Double num_1;
     Double num_2;
     Double res;
+
+
     String oper;
     private long chatId;
 
@@ -67,6 +72,7 @@ public class Bot extends TelegramLongPollingBot implements LongPollingBot {
         ArrayList<KeyboardRow> keyboard = new ArrayList<KeyboardRow>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
         KeyboardRow keyboardSecondRow = new KeyboardRow();
+        KeyboardRow keyboardThirdRow = new KeyboardRow();
 
         replyKeyboardMarkup.setSelective(true);
         replyKeyboardMarkup.setResizeKeyboard(true);
@@ -81,37 +87,107 @@ public class Bot extends TelegramLongPollingBot implements LongPollingBot {
             keyboardFirstRow.add("Exp");
             keyboardFirstRow.add("Sqrt");
             keyboardSecondRow.add("Help");
+            keyboardThirdRow.add("Back");
             keyboard.add(keyboardFirstRow);
             keyboard.add(keyboardSecondRow);
+            keyboard.add(keyboardThirdRow);
             replyKeyboardMarkup.setKeyboard(keyboard);
-            sendMsg(message, "Salam");
+            sendMsg(message, "Выберите необходимую операцию");
             return;
         }
-        if (txt.equals("/exp") || (txt.equals("Exp"))){
-            keyboard.clear();
-
-            keyboardFirstRow.add("2");
+        if  (message.getText().equals("Exp")){
+            keyboard.removeAll(keyboardFirstRow);
             keyboardFirstRow.add("3");
-            keyboardSecondRow.add("Back");
+            keyboardSecondRow.add("4");
+            keyboardThirdRow.add("Back");
+
             keyboard.add(keyboardFirstRow);
             keyboard.add(keyboardSecondRow);
+            keyboard.add(keyboardThirdRow);
+
             replyKeyboardMarkup.setKeyboard(keyboard);
-            sendMsg(message, "re");
+            sendMsg(message, "Вводи");
+
+            return;
         }
 
-        if (txt.equals("/2") || (txt.equals("3"))){
-            keyboard.clear();
-            Double d = Math.pow(num_1,num_2);
 
-            String re= d.toString();
-            keyboard.add(keyboardFirstRow);
-            keyboard.add(keyboardSecondRow);
-            replyKeyboardMarkup.setKeyboard(keyboard);
-            sendMsg(message, re);
+
+
+        if (message.getText().equals("3")){
+            Message inMessage = update.getMessage();
+            //Создаем исходящее сообщение
+            SendMessage outMessage = new SendMessage();
+            //Указываем в какой чат будем отправлять сообщение
+            //(в тот же чат, откуда пришло входящее сообщение)
+            outMessage.setChatId(String.valueOf(inMessage.getChatId()));
+            //Указываем текст сообщения
+            String ss = inMessage.getText();
+            Double v = Math.pow(Double.parseDouble(ss),2);
+            int es = (int) Math.round(v);
+
+            outMessage.setText(String.valueOf(es));
+
+            //Отправляем сообщение
+            try {
+                execute(outMessage);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
         }
     }
-    public synchronized void exp(Message msg, String s){
 
+            /*
+            keyboard.clear();
+            SendMessage outMessage = new SendMessage();
+            outMessage.setChatId(String.valueOf(message.getChatId()));
+
+            Message mas = update.getMessage();
+            String as = String.valueOf(mas.getText());
+            Double a = Double.valueOf(as);
+
+
+
+            Message message1 = update.getMessage();
+            String aas = String.valueOf(message1.getText());
+            Double b = Double.valueOf(aas);
+
+
+
+
+            num_1 = a;
+            num_2 = b;
+            res = Math.pow(num_1,num_2);
+            String ef = String.valueOf(res);
+
+
+
+            outMessage.setText(ef);
+
+            sendMsg(message,ef);
+            System.out.println(ef);
+
+*/
+
+
+
+
+    public synchronized void expi(String ChatId, String s){
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.enableMarkdown(true);
+        sendMessage.setChatId(ChatId);
+        num_1 = Double.parseDouble(s);
+
+
+        res = Math.pow(num_1,2);
+        String result = Double.toString(res);
+        sendMessage.setText(result);
+
+        try {
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+//            log.log(Level.SEVERE, "Exception: ", e.toString());
+        }
     }
 
 
